@@ -2,7 +2,7 @@
 
 namespace OsbPlayerTest.Layer
 {
-    internal abstract class DxLayer
+    public abstract class DxLayer
     {
         protected readonly RenderTarget RenderTarget;
 

@@ -1,4 +1,4 @@
-﻿using Milkitic.OsuLib.Enums;
+﻿using Milkitic.OsbLib.Enums;
 using System.Collections.Generic;
 using System.Linq;
 

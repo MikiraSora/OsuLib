@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using D2D = SharpDX.Direct2D1;
 namespace OsbPlayerTest.Layer
 {
-    internal class BackgroundLayer : DxLayer
+    public class BackgroundLayer : DxLayer
     {
         private struct RenderThings
         {
@@ -69,7 +69,7 @@ namespace OsbPlayerTest.Layer
                 if (item.Elment.Type == ElementType.Animation)
                     _objs[i] = new AnimatedElementObject(RenderTarget, (AnimatedElement)item.Elment, _timing);
                 else
-                    _objs[i] = new ElementObject(RenderTarget, item.Elment, _timing);
+                    _objs[i] = new ElementObject( item.Elment, _timing);
             }
 
             const int updateDelay = 500;

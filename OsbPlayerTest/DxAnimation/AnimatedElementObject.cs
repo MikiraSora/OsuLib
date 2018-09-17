@@ -20,12 +20,12 @@ namespace OsbPlayerTest.DxAnimation
         private readonly Stopwatch _aniSw = new Stopwatch();
 
         private int _tmpIndex = -1;
-        public AnimatedElementObject(RenderTarget target, AnimatedElement element, bool enableLog = false) : base(target, element, enableLog)
+        public AnimatedElementObject(RenderTarget target, AnimatedElement element, bool enableLog = false) : base(element, enableLog)
         {
         }
 
         public AnimatedElementObject(RenderTarget target, AnimatedElement element, BackgroundLayer.Timing timing, bool enableLog = false)
-            : base(target, element, timing, enableLog)
+            : base(element, timing, enableLog)
         {
             _times = element.FrameCount;
             _delay = element.FrameDelay;

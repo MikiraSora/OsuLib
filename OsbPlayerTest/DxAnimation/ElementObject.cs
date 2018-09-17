@@ -15,7 +15,7 @@ using Mathe = SharpDX.Mathematics.Interop;
 
 namespace OsbPlayerTest.DxAnimation
 {
-    internal class ElementObject : AnimationObject, IDisposable
+    public class ElementObject : AnimationObject, IDisposable
     {
         public Size2F Size => CurrentBitmap.Size;
         public float Width => Size.Width;
@@ -33,12 +33,13 @@ namespace OsbPlayerTest.DxAnimation
         protected readonly BackgroundLayer.Timing Timing;
         private readonly bool _innerWatch = true;
         private readonly Element _element;
+        public Element Element=>_element;
 
         //public long Offset;
         private long _timeOffset;
 
-        private float _originOffsetX;
-        private float _originOffsetY;
+        public float _originOffsetX;
+        public float _originOffsetY;
 
         // debug
 #if DEBUG
@@ -54,10 +55,10 @@ namespace OsbPlayerTest.DxAnimation
         private TimeRange _pTime = TimeRange.Default;
         private TimeRange _cTime = TimeRange.Default;
 
-        private Static<float> _f;
-        private Static<float> _x, _y, _w, _h;
-        private Static<float> _r, _vx, _vy;
-        private Static<float> _cR, _cG, _cB;
+        public Static<float> _f;
+        public Static<float> _x, _y, _w, _h;
+        public Static<float> _r, _vx, _vy;
+        public Static<float> _cR, _cG, _cB;
 
         private bool _useH, _useV, _useA; //todo
 
@@ -74,19 +75,16 @@ namespace OsbPlayerTest.DxAnimation
 
         #endregion private statics
 
-        public ElementObject(D2D.RenderTarget target, Element element, bool enableLog = false)
-            : this(target, element, null, enableLog)
+        public ElementObject(Element element, bool enableLog = false)
+            : this(element, null, enableLog)
         {
         }
 
-        public ElementObject(D2D.RenderTarget target, Element element, BackgroundLayer.Timing timing,
+        public ElementObject(Element element, BackgroundLayer.Timing timing,
             bool enableLog = false)
         {
             _element = element;
-            Target = target;
-#if DEBUG
-            _redBrush = new D2D.SolidColorBrush(target, new Mathe.RawColor4(1, 0, 0, 1));
-#endif
+
             EnableLog = enableLog;
 
             if (timing != null)
@@ -96,15 +94,7 @@ namespace OsbPlayerTest.DxAnimation
             }
             else
                 Timing = new BackgroundLayer.Timing(0, new Stopwatch());
-
-            var path = Path.Combine(Program.Fi.Directory.FullName, element.ImagePath);
-            if (File.Exists(path))
-            {
-                Bitmaps = new[] { Loader.LoadBitmap(target, path) };
-                CurrentBitmap = Bitmaps[0];
-            }
-            else
-                return;
+            
             SetDefaultValue();
             SetMinMax();
         }
@@ -299,48 +289,44 @@ namespace OsbPlayerTest.DxAnimation
             _useH = _element.ParameterList.Any(e => e.Type == Milkitic.OsbLib.Models.ParameterEnum.Horizontal);
             _useV = _element.ParameterList.Any(e => e.Type == Milkitic.OsbLib.Models.ParameterEnum.Vertical);
             _useA = _element.ParameterList.Any(e => e.Type == Milkitic.OsbLib.Models.ParameterEnum.Additive);
-
-            // rects
-            _w = (Static<float>)CurrentBitmap.Size.Width;
-            _h = (Static<float>)CurrentBitmap.Size.Height;
-
+            
             //origion
             switch (_element.Origin)
             {
                 case OriginType.BottomLeft:
                     _originOffsetX = 0;
-                    _originOffsetY = Height;
+                    _originOffsetY = 1;
                     break;
                 case OriginType.BottomCentre:
-                    _originOffsetX = Width / 2;
-                    _originOffsetY = Height;
+                    _originOffsetX = 0.5f;
+                    _originOffsetY = 1;
                     break;
                 case OriginType.BottomRight:
-                    _originOffsetX = Width;
-                    _originOffsetY = Height;
+                    _originOffsetX = 1;
+                    _originOffsetY = 1;
                     break;
                 case OriginType.CentreLeft:
                     _originOffsetX = 0;
-                    _originOffsetY = Height / 2;
+                    _originOffsetY = 0.5f;
                     break;
                 case OriginType.Centre:
-                    _originOffsetX = Width / 2;
-                    _originOffsetY = Height / 2;
+                    _originOffsetX = 0.5f;
+                    _originOffsetY = 0.5f;
                     break;
                 case OriginType.CentreRight:
-                    _originOffsetX = Width;
-                    _originOffsetY = Height / 2;
+                    _originOffsetX = 1;
+                    _originOffsetY = 0.5f;
                     break;
                 case OriginType.TopLeft:
                     _originOffsetX = 0;
                     _originOffsetY = 0;
                     break;
                 case OriginType.TopCentre:
-                    _originOffsetX = Width / 2;
+                    _originOffsetX = 0.5f;
                     _originOffsetY = 0;
                     break;
                 case OriginType.TopRight:
-                    _originOffsetX = Width;
+                    _originOffsetX = 1;
                     _originOffsetY = 0;
                     break;
             }

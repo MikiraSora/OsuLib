@@ -4,7 +4,7 @@ using Gdip = System.Drawing;
 
 namespace OsbPlayerTest.DxAnimation
 {
-    internal abstract class AnimationObject
+    public abstract class AnimationObject
     {
         public abstract void Fade(EasingType easingEnum, int startTime, int endTime, float startOpacity,
             float endOpacity);
@@ -38,7 +38,7 @@ namespace OsbPlayerTest.DxAnimation
             }
         }
 
-        protected struct Static<T>
+        public struct Static<T>
         {
             public T Source { get; set; }
             public T RealTime { get; set; }
